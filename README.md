@@ -67,7 +67,7 @@ By default Adobe Illustrator saves exported PDFs very inefficiently. For best re
 
 Other vector graphics editors which natively use the OSX Quartz renderer, such as <a href="http://www.sketchapp.com">Sketch</a>, will create much more compact PDFs.
 
-The amazing devs at <a href="http://www.panic.com">Panic</a> have now released a PDF shrinking utility, ShrinkIt, which should take a lot of the pain out of a vector asset workflow.
+The amazing devs at <a href="http://www.panic.com">Panic</a> have now released a PDF shrinking utility, <a href="https://panic.com/blog/shrinkit-1-2/">ShrinkIt</a>, which should take a lot of the pain out of a vector asset workflow.
 
 #Licence
 Copyright 2016 Roman Bambura - <a href="http://sonettic.com">@RomanBambura.</a> All rights reserved.
