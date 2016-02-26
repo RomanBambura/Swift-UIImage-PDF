@@ -16,7 +16,7 @@ let pdfView = UIPDFView(name: "animalsCat", frame: CGRectMake(10, 20, 100, 100))
 ```
 
 # UIImage 
-PDF asset used without extension
+PDF asset name used without extension
 
 Sample: 
 ```swift
