@@ -1,4 +1,4 @@
-# Swift-UIImage-PDF
+# UIImage+PDF Swift
 UIImage+PDF provides a UIImage class category method to render a UIImage from any PDF stored in the application bundle. The motivation for this was to enable the easy use of scaleable vector assets in Swift iOS apps.
 
 #Usage
