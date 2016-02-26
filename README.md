@@ -51,7 +51,7 @@ UIImage.imageWithPDFNamed(name: String, height: CGFloat)
 
 # Disk Cacheing 
 Cached PDF assets to PNG images with readable names and scale factor ready to reuse.<br/>
-UIImage+PDF now transparently caches all rendered PDFs in <Application_Home>/Library/Caches/CachedAssets. This substantially improves application latency with large PDFs, especially on larger devices. To disable disk cacheing, call:
+UIImage+PDF now transparently caches all rendered PDFs in Application_Home/Documents/CachedAssets. This substantially improves application latency with large PDFs, especially on larger devices. To disable disk cacheing, call:
 ```swift
 UIImage.shouldCacheOnDisk = false
 ```
