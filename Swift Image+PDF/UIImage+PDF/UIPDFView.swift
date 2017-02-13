@@ -13,8 +13,8 @@ class UIPDFView: UIView {
     
     let page = 1
     var m_resourceName:String?
-    var m_resourceURL:NSURL?
-    var m_resourceData:NSData?
+    var m_resourceURL:URL?
+    var m_resourceData:Data?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -24,7 +24,7 @@ class UIPDFView: UIView {
         super.init(frame: frame)
     }
     
-    init(name: String, frame: CGRect) {
+    init(withName name: String, frame: CGRect) {
         super.init(frame: frame)
         
         m_resourceName = name + ".pdf"
@@ -47,7 +47,7 @@ class UIPDFView: UIView {
     }
     
     // Resource URL
-    var resourceURL:NSURL?{
+    var resourceURL:URL?{
         
         set{
             m_resourceURL = newValue
@@ -60,7 +60,7 @@ class UIPDFView: UIView {
     }
     
     // Resource Data
-    var resourceData:NSData?{
+    var resourceData:Data?{
         set{
             m_resourceData = newValue;
             
@@ -72,15 +72,15 @@ class UIPDFView: UIView {
     }
     
     
-    static func pageCountForURL(resourceURL: NSURL?) -> Int{
+    static func pageCountForURL(_ resourceURL: URL?) -> Int{
     
         var pageCount = 1;
     
         if resourceURL != nil
         {
-            if let document: CGPDFDocumentRef = CGPDFDocumentCreateWithURL( resourceURL ){
+            if let document: CGPDFDocument = CGPDFDocument( resourceURL as! CFURL){
         
-                pageCount = CGPDFDocumentGetNumberOfPages( document );
+                pageCount = document.numberOfPages;
             }
         }
     
@@ -88,45 +88,43 @@ class UIPDFView: UIView {
     }
 
     
-    func renderIntoContext(ctx: CGContextRef,  url resourceURL: NSURL?, data resourceData:NSData?, size: CGSize, page:Int, preserveAspectRatio:Bool){
+    func renderIntoContext(_ ctx: CGContext,  url resourceURL: URL?, data resourceData:Data?, size: CGSize, page:Int, preserveAspectRatio:Bool){
         
-        var document: CGPDFDocumentRef?
+        var document: CGPDFDocument?
 
         if resourceURL != nil
         {
-            document = CGPDFDocumentCreateWithURL( resourceURL )!
+            document = CGPDFDocument( resourceURL as! CFURL )!
         }
         else if resourceData != nil
         {
-            if let provider: CGDataProviderRef = CGDataProviderCreateWithCFData( resourceData )
+            if let provider: CGDataProvider = CGDataProvider( data: resourceData as! CFData )
             {
-                document = CGPDFDocumentCreateWithProvider( provider )!
+                document = CGPDFDocument( provider )!
             }
         }
         
-        if let page1: CGPDFPageRef = CGPDFDocumentGetPage( document, page ){
+        if let page1: CGPDFPage = document?.page(at: page ){
         
-            let destRect: CGRect = CGRectMake(0, 0, size.width, size.height)
+            let destRect: CGRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
             
-            CGContextFillRect(ctx, destRect);
-            CGContextTranslateCTM(ctx, 0.0, destRect.size.height);
-            CGContextScaleCTM(ctx, 1.0, -1.0);
-            CGContextConcatCTM(ctx, CGPDFPageGetDrawingTransform(page1, CGPDFBox.CropBox, destRect, 0, preserveAspectRatio));
-            CGContextDrawPDFPage(ctx, page1);
+            ctx.fill(destRect);
+            ctx.translateBy(x: 0.0, y: destRect.size.height);
+            ctx.scaleBy(x: 1.0, y: -1.0);
+            ctx.concatenate(page1.getDrawingTransform(CGPDFBox.cropBox, rect: destRect, rotate: 0, preserveAspectRatio: preserveAspectRatio));
+            ctx.drawPDFPage(page1);
         }
     }
     
-    
-    
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect){
-    
-        if let ctx: CGContextRef = UIGraphicsGetCurrentContext()
+    override func draw(_ rect: CGRect){
+     
+        if let ctx: CGContext = UIGraphicsGetCurrentContext()
         {
             self.backgroundColor?.set()
-            CGContextFillRect( ctx, rect )
-            layer.renderInContext(ctx)
+            ctx.fill(rect )
+            layer.render(in: ctx)
             renderIntoContext(ctx, url:resourceURL, data:resourceData, size:rect.size, page:page, preserveAspectRatio:true)
         }
     }

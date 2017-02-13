@@ -10,14 +10,17 @@ import UIKit
 
 extension UIView {
     
-    var image: UIImage{
+    var imageShot: UIImage{
         
         get{
-            self.layer.shouldRasterize = true
-        
-            UIGraphicsBeginImageContextWithOptions( self.bounds.size, false, self.contentScaleFactor )
-            self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext();
+            //self.layer.shouldRasterize = true
+            
+            //print(self.contentScaleFactor)
+            //UIGraphicsBeginImageContextWithOptions( self.bounds.size, false, self.contentScaleFactor)
+            
+            UIGraphicsBeginImageContextWithOptions( self.bounds.size, false, 3)
+            self.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
             UIGraphicsEndImageContext();
             return image;
         }
@@ -25,16 +28,16 @@ extension UIView {
     
     
     
-    func savePNG(filePath: String){
-        if let data = UIImagePNGRepresentation(self.image){
-            data.writeToFile(filePath, atomically:true)
+    func savePNG(_ filePath: String){
+        if let data = UIImagePNGRepresentation(self.imageShot){
+            try? data.write(to: URL(fileURLWithPath: filePath), options: [.atomic])
         }
     }
     
     
-    func saveJPEG(filePath: String, quality:CGFloat){
-        if let data = UIImageJPEGRepresentation(self.image, quality){
-            data.writeToFile(filePath, atomically:false)
+    func saveJPEG(_ filePath: String, quality:CGFloat){
+        if let data = UIImageJPEGRepresentation(self.imageShot, quality){
+            try? data.write(to: URL(fileURLWithPath: filePath), options: [])
         }
     }
     

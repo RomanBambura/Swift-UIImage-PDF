@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "A066FFF00290EBA4EC1E72C6FF51C9DEBB1D46B0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "A066FFF00290EBA4EC1E72C6FF51C9DEBB1D46B0" : 0,
+    "F0F16AFC1EEA4EE9481A6656D286995C37BA90C6" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A5A39272-10E8-494C-9708-4A6B438AF1EF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "A066FFF00290EBA4EC1E72C6FF51C9DEBB1D46B0" : "Swift-UIImage-PDF\/",
+    "F0F16AFC1EEA4EE9481A6656D286995C37BA90C6" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Swift Image+PDF",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Swift Image+PDF.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/RomanBambura\/Swift-UIImage-PDF.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A066FFF00290EBA4EC1E72C6FF51C9DEBB1D46B0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/RomanBambura\/Swift-Image-PDF.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F0F16AFC1EEA4EE9481A6656D286995C37BA90C6"
+    }
+  ]
+}

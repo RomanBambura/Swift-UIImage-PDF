@@ -10,20 +10,20 @@ import UIKit
 
 class PDFResourceHelper {
      
-    static func resourceURLForName(resourceName:String?) -> NSURL?{
+    static func resourceURLForName(_ resourceName:String?) -> URL?{
         
-        if let path = NSBundle.mainBundle().pathForResource(resourceName , ofType: nil){
-            return NSURL(fileURLWithPath:path)
+        if let path = Bundle.main.path(forResource: resourceName , ofType: nil){
+            return URL(fileURLWithPath:path)
         }
         return nil
     }
     
-    static func mediaRect(resourceName: String?) -> CGRect
+    static func mediaRect(_ resourceName: String?) -> CGRect
     {
         return self.mediaRectForURL(self.resourceURLForName(resourceName)!)
     }
     
-    static func mediaRectForURL(resourceURL: NSURL) -> CGRect
+    static func mediaRectForURL(_ resourceURL: URL) -> CGRect
     {
         return mediaRectForURL(resourceURL, page:1)
     }
@@ -31,21 +31,21 @@ class PDFResourceHelper {
     
     
     
-    static func mediaRectForURL(resourceURL: NSURL?,  page: Int)-> CGRect{
+    static func mediaRectForURL(_ resourceURL: URL?,  page: Int)-> CGRect{
         
-        var rect:CGRect = CGRectNull
+        var rect:CGRect = CGRect.null
         
         if resourceURL != nil
         {
-            if let pdf:CGPDFDocumentRef? = CGPDFDocumentCreateWithURL(resourceURL)
+            if let pdf:CGPDFDocument = CGPDFDocument(resourceURL as! CFURL)
             {
                 
-                if let page1:CGPDFPageRef = CGPDFDocumentGetPage( pdf, page)
+                if let page1:CGPDFPage = pdf.page(at: page)
                 {
                     
-                    rect = CGPDFPageGetBoxRect(page1, CGPDFBox.CropBox)
+                    rect = page1.getBoxRect(CGPDFBox.cropBox)
                     
-                    let rotationAngle = CGPDFPageGetRotationAngle(page1)
+                    let rotationAngle = page1.rotationAngle
                     
                     if (rotationAngle == 90 || rotationAngle == 270)
                     {
@@ -60,49 +60,49 @@ class PDFResourceHelper {
         return rect;
     }
     
-    static func renderIntoContext(ctx: CGContextRef,  url resourceURL: NSURL?, data resourceData:NSData?, size: CGSize, page:Int, preserveAspectRatio:Bool){
+    static func renderIntoContext(_ ctx: CGContext,  url resourceURL: URL?, data resourceData:Data?, size: CGSize, page:Int, preserveAspectRatio:Bool){
         
-        var document: CGPDFDocumentRef?
+        var document: CGPDFDocument?
         
         if resourceURL != nil
         {
-            document = CGPDFDocumentCreateWithURL( resourceURL )!
+            document = CGPDFDocument( resourceURL as! CFURL )!
         }
         else if resourceData != nil
         {
-            if let provider: CGDataProviderRef = CGDataProviderCreateWithCFData( resourceData )
+            if let provider: CGDataProvider = CGDataProvider( data: resourceData as! CFData )
             {
-                document = CGPDFDocumentCreateWithProvider( provider )!
+                document = CGPDFDocument( provider )!
             }
         }
         
-        if let page1: CGPDFPageRef = CGPDFDocumentGetPage( document, page ){
+        if let page1: CGPDFPage = document?.page(at: page ){
             
-            let destRect: CGRect = CGRectMake(0, 0, size.width, size.height)
+            let destRect: CGRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
             
-            let drawingTransform: CGAffineTransform = CGPDFPageGetDrawingTransform(page1, CGPDFBox.CropBox, destRect, 0, preserveAspectRatio);
-            CGContextConcatCTM(ctx, drawingTransform)
-            CGContextDrawPDFPage( ctx, page1 )
+            let drawingTransform: CGAffineTransform = page1.getDrawingTransform(CGPDFBox.cropBox, rect: destRect, rotate: 0, preserveAspectRatio: preserveAspectRatio);
+            ctx.concatenate(drawingTransform)
+            ctx.drawPDFPage(page1 )
         }
     }
 
-    static func mediaRectForData(data: NSData?,  page: Int) -> CGRect{
+    static func mediaRectForData(_ data: Data?,  page: Int) -> CGRect{
         
-        var rect:CGRect = CGRectNull
+        var rect:CGRect = CGRect.null
         
         if data != nil
         {
-            if let provider:CGDataProviderRef = CGDataProviderCreateWithCFData( data )
+            if let provider:CGDataProvider = CGDataProvider( data: data as! CFData )
             {
                 
-                if let document:CGPDFDocumentRef = CGPDFDocumentCreateWithProvider( provider ){
+                if let document:CGPDFDocument = CGPDFDocument( provider ){
                     
-                    if let page1:CGPDFPageRef = CGPDFDocumentGetPage( document, page )
+                    if let page1:CGPDFPage = document.page(at: page )
                     {
                         
-                        rect = CGPDFPageGetBoxRect( page1, CGPDFBox.CropBox )
+                        rect = page1.getBoxRect(CGPDFBox.cropBox )
                         
-                        let rotationAngle = CGPDFPageGetRotationAngle( page1 )
+                        let rotationAngle = page1.rotationAngle
                         
                         if (rotationAngle == 90 || rotationAngle == 270)
                         {
